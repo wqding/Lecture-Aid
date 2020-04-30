@@ -6,7 +6,7 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 from summarizer import Summarizer
 from summarizer.coreference_handler import CoreferenceHandler
 
-handler = CoreferenceHandler(spacy_model="en_core_web_lg", greedyness=.4)
+handler = CoreferenceHandler(spacy_model="en_core_web_md", greedyness=.4)
 model = Summarizer(sentence_handler=handler)
 
 FULL_TEXT_LENGTH = 500
