@@ -2,14 +2,10 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpRequest, HttpResponseServerError
 import json
 from nltk.tokenize import sent_tokenize, word_tokenize
-
-from summarizer import Summarizer
-from summarizer.coreference_handler import CoreferenceHandler
-
-handler = CoreferenceHandler(spacy_model="en_core_web_md", greedyness=.4)
-model = Summarizer(sentence_handler=handler)
+import requests
 
 FULL_TEXT_LENGTH = 500
+SUMMARY_LENGTH = 100
 
 def summarize(request):
     if request.method == 'GET':
@@ -18,7 +14,6 @@ def summarize(request):
             fullText = jsonData['text']
             paragraphs = splitText(fullText)
             summarizedTexts = list(map(lambda p: genSummary(p), paragraphs))
-            print(summarizedTexts)
             
         except KeyError:
             HttpResponseServerError("Malformed data!")
@@ -26,8 +21,12 @@ def summarize(request):
         return HttpResponse(' '.join(summarizedTexts))
     
 def genSummary(text):
-    result = model(text)
-    return result
+    # send request to https://api.smrzr.io/summarize?ratio=0.15
+    ratio =  SUMMARY_LENGTH/FULL_TEXT_LENGTH
+    print(ratio)
+    r = requests.post('https://api.smrzr.io/summarize?ratio='+str(ratio),  data = text)
+    jsonResp = json.loads(r.text)
+    return(jsonResp['summary'])
     
 def splitText(text):
     paragraphs = []
