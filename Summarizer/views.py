@@ -10,8 +10,10 @@ SUMMARY_LENGTH = 100
 def summarize(request):
     if request.method == 'GET':
         jsonData = json.loads(request.body)
+        print("json data: ", jsonData)
         try:
             fullText = jsonData['text']
+            print("full text: ", fullText)
             paragraphs = splitText(fullText)
             summarizedTexts = list(map(lambda p: genSummary(p), paragraphs))
             
