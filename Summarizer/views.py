@@ -9,6 +9,7 @@ SUMMARY_LENGTH = 100
 
 def summarize(request):
     if request.method == 'GET':
+        print("body: ",  request.body)
         jsonData = json.loads(request.body)
         print("json data: ", jsonData)
         try:
