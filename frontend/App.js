@@ -1,19 +1,22 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import Home from './components/Home'
+import HomePage from './components/HomePage'
+import RecordingsPage from './components/RecordingsPage'
+import 'react-native-gesture-handler';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
 export default function App() {
+  const Stack = createStackNavigator();
+
   return (
-    <View style = {styles.container}>
-      <Home/>
-    </View>
+    <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="HomePage" component={HomePage} 
+          />
+          <Stack.Screen name="RecordingsPage" component={RecordingsPage} options={{title: 'Recordings'}}/>
+        </Stack.Navigator>
+      </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
