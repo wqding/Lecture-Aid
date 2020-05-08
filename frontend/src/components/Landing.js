@@ -1,5 +1,6 @@
 import React, {useCallback} from 'react'
 import '../App.css'
+import axios from 'axios'
 import {useDropzone} from 'react-dropzone'
 
 const Landing = () => {
@@ -10,9 +11,17 @@ const Landing = () => {
       reader.onabort = () => console.log('file reading was aborted')
       reader.onerror = () => console.log('file reading has failed')
       reader.onload = () => {
-      // Do whatever you want with the file contents
         const binaryStr = reader.result
         console.log(binaryStr)
+        axios.post('http://127.0.0.1:8000/', {
+          encoded: binaryStr
+        })
+        .then(response => {
+          console.log(response.status)
+        })
+        .catch(err => {
+          console.log(err)
+        })
       }
       reader.readAsArrayBuffer(file)
     })

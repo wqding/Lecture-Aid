@@ -13,20 +13,21 @@ def summarize(request):
         jsonData = json.loads(request.body)
         print("json data: ", jsonData)
         try:
-            fullText = jsonData['text']
-            print("full text: ", fullText)
-            paragraphs = splitText(fullText)
-            summarizedTexts = list(map(lambda p: genSummary(p), paragraphs))
+            encoded = jsonData['encoded']
+            print("encoded: ", encoded)
             
         except KeyError:
             HttpResponseServerError("Malformed data!")
             HttpResponse("Received JSON Data")
-        return HttpResponse(' '.join(summarizedTexts))
-    
+        return HttpResponse("received request")
+
+def summarizeFullText(fullText):
+    paragraphs = splitText(fullText)
+    return list(map(lambda p: genSummary(p), paragraphs))
+
 def genSummary(text):
     # send request to https://api.smrzr.io/summarize?ratio=0.15
     ratio =  SUMMARY_LENGTH/FULL_TEXT_LENGTH
-    print(ratio)
     r = requests.post('https://api.smrzr.io/summarize?ratio='+str(ratio),  data = text)
     jsonResp = json.loads(r.text)
     return(jsonResp['summary'])
