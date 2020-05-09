@@ -6,15 +6,16 @@ import {useDropzone} from 'react-dropzone'
 const Landing = () => {
   const onDrop = useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file) => {
-      const reader = new FileReader()
+      const reader = new FileReader();
 
       reader.onabort = () => console.log('file reading was aborted')
       reader.onerror = () => console.log('file reading has failed')
       reader.onload = () => {
-        const binaryStr = reader.result
-        console.log(binaryStr)
-        axios.post('http://127.0.0.1:8000/', {
-          encoded: binaryStr
+        const base64 = reader.result;
+
+        console.log(base64)
+        axios.post('http://127.0.0.1:8000/summarize/', {
+          "base64": base64
         })
         .then(response => {
           console.log(response.status)
@@ -23,11 +24,13 @@ const Landing = () => {
           console.log(err)
         })
       }
-      reader.readAsArrayBuffer(file)
+      reader.readAsDataURL(file)
     })
     
   }, [])
   const {getRootProps, getInputProps} = useDropzone({onDrop})
+
+  
 
   return (
     <div className="Dropzone" {...getRootProps()}>

@@ -9,12 +9,13 @@ SUMMARY_LENGTH = 100
 
 def summarize(request):
     if request.method == 'POST':
-        print("body: ",  request.body)
-        jsonData = json.loads(request.body)
-        print("json data: ", jsonData)
         try:
-            encoded = jsonData['encoded']
-            print("encoded: ", encoded)
+            base64 = json.loads(request.body)['base64']
+            print(base64)
+            # byte = str(chunk.values())
+            # print(byte)
+            
+            
             
         except KeyError:
             HttpResponseServerError("Malformed data!")
