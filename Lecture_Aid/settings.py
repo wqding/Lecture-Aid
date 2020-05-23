@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'Summarizer'
+    'Summarizer',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -57,6 +58,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'Lecture_Aid.urls'
+ASGI_APPLICATION = "Lecture_Aid.routing.application"
 
 TEMPLATES = [
     {

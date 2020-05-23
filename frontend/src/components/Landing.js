@@ -1,30 +1,26 @@
 import React, {useCallback} from 'react'
 import '../App.css'
-import axios from 'axios'
 import {useDropzone} from 'react-dropzone'
+import WebSocketInstance from '../services/WebSocket'
 
 const Landing = () => {
   const onDrop = useCallback((acceptedFiles) => {
+
     acceptedFiles.forEach((file) => {
       const reader = new FileReader();
 
       reader.onabort = () => console.log('file reading was aborted')
       reader.onerror = () => console.log('file reading has failed')
-      reader.onload = () => {
-        const base64 = reader.result;
 
-        console.log(base64)
-        axios.post('http://127.0.0.1:8000/summarize/', {
-          "base64": base64
-        })
-        .then(response => {
-          console.log(response.status)
-        })
-        .catch(err => {
-          console.log(err)
-        })
+      reader.onload = () => {
+        const arrayBuffer = reader.result;
+
+        console.log(new Uint8Array(arrayBuffer))
+        console.log(WebSocketInstance.state())
+        WebSocketInstance.send(new Uint8Array(arrayBuffer))
       }
-      reader.readAsDataURL(file)
+      reader.readAsArrayBuffer(file)
+      
     })
     
   }, [])
