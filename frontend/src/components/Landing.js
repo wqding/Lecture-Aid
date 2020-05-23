@@ -13,11 +13,29 @@ const Landing = () => {
       reader.onerror = () => console.log('file reading has failed')
 
       reader.onload = () => {
-        const arrayBuffer = reader.result;
+        const arrayBuffer = new Uint8Array(reader.result);
 
-        console.log(new Uint8Array(arrayBuffer))
-        console.log(WebSocketInstance.state())
-        WebSocketInstance.send(new Uint8Array(arrayBuffer))
+        console.log(arrayBuffer)
+
+        //3mb
+        var chunkSize = 5 * 1024 * 1024;
+        var fileSize = arrayBuffer.length;
+        var numChunks = Math.ceil(fileSize/chunkSize,chunkSize);
+        var chunkIdx = 1;
+      
+        console.log('file size..',fileSize);
+        console.log('chunks...',numChunks);
+      
+        // while (chunkIdx <= numChunks) {
+            var offset = chunkIdx*chunkSize;
+            console.log('current chunk..', chunkIdx);
+            console.log('offset...', chunkIdx*chunkSize);
+            console.log('file blob from offset...', offset)
+            var chunk = arrayBuffer.slice(offset,offset+chunkSize)
+            console.log(chunk);
+            chunkIdx++;
+            WebSocketInstance.send(chunk)
+        // }
       }
       reader.readAsArrayBuffer(file)
       
