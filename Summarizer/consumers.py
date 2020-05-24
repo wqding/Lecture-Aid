@@ -13,10 +13,12 @@ class SummaryConsumer(AsyncConsumer):
         })
     
     async def websocket_receive(self, event):
-        f = open('./file.mp3', 'wb')
+        # print(event['text'])
         jsonData = json.loads(event['text'])
-        arrayBuffer = bytearray(jsonData.values())
-        # print(arrayBuffer)
+        chunkIdx = jsonData['chunkIdx']
+        print(chunkIdx)
+        f = open('./file_'+chunkIdx, 'wb')
+        arrayBuffer = bytearray(jsonData['arrayBuffer'].values())
         f.write(arrayBuffer)
         f.close()
         

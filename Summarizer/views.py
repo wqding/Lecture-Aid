@@ -14,9 +14,7 @@ def summarize(request):
             print(base64)
             # byte = str(chunk.values())
             # print(byte)
-            
-            
-            
+
         except KeyError:
             HttpResponseServerError("Malformed data!")
             HttpResponse("Received JSON Data")

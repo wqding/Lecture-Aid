@@ -1,6 +1,14 @@
 requests.rest
 salvaged_code
 
+# Django #
+*.log
+*.pot
+*.pyc
+__pycache__
+db.sqlite3
+media
+
 # dependencies
 node_modules
 .pnp
@@ -61,13 +69,6 @@ wheels/
 pip-log.txt 
 pip-delete-this-directory.txt 
 
-# Django #
-*.log
-*.pot
-*.pyc
-__pycache__
-db.sqlite3
-media
-
 # Backup files # 
 *.bak 
+Lecture_Aid/__pycache__/settings.cpython-37.pyc
